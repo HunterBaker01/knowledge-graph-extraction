@@ -1,20 +1,35 @@
 ## Changelog
 - **V0 --- 11/05/2026** Initial related work
+- **V1 --- 19/05/2026** Restructured around sim-human bias-map focus. Taking out the SEO focus.
 
 ---
 
-**Zhang & Soh (2024) — Extract-Define-Canonicalize (EDC).** [arXiv:2404.03868](https://arxiv.org/abs/2404.03868). Three-phase LLM pipeline for KG construction that works with or without a predefined schema. Seems directly related.
+## Core: Simulated Users
 
-**Pan et al. (2025) — LLMs4SchemaDiscovery / SCHEMA-MINER.** [arXiv:2504.00752](https://arxiv.org/abs/2504.00752). Human-in-the-loop schema mining with iterative LLM + expert feedback in materials science. Also directly related.
+**Park et al. (2023) — Generative Agents: Interactive Simulacra of Human Behavior.** [arXiv:2304.03442](https://arxiv.org/abs/2304.03442). Paper for LLM agents simulating individual human behavior over long periods.
 
-**Kommineni, König-Ries, Samuel (2024) — From human experts to machines.** [arXiv:2403.08345](https://arxiv.org/abs/2403.08345). Semi-automated pipeline for KG using LLM-judge eval. Related + may use LLM-judge for our project as well, so worth understanding the process.
+**Park et al. (2024) — Generative Agent Simulations of 1,000 People.** [arXiv:2411.10109](https://arxiv.org/abs/2411.10109). Replication study: 1,000 LLM agents conditioned on interview data to mimic specific humans.
 
-**Lu & Wang (2025) — KARMA.** [arXiv:2502.06472](https://arxiv.org/abs/2502.06472). Multi-agent LLM system for KG enrichment.
+**Argyle et al. (2023) — Out of One, Many: Using Language Models to Simulate Human Samples.** [arXiv:2209.06899](https://arxiv.org/abs/2209.06899). LLMs conditioned on demographics reproduce opinion distributions. Directly motivates population-match framing and exposes the persona-conditioning question (RQ2).
 
-**Vukovic et al. (2025) — TeQoDO.** [arXiv:2507.23358](https://arxiv.org/abs/2507.23358). LLM builds a task-oriented dialogue ontology from scratch without supervision.
+**Aher, Arriaga, Kalai (2023) — Using Large Language Models to Simulate Multiple Humans and Replicate Human Subject Studies.** [arXiv:2208.10264](https://arxiv.org/abs/2208.10264). Paper on using sim-users as experimental subjects.
 
-**Liu et al. (2022, updated) — Survey on Open Information Extraction: from rule-based to LLM.** [arXiv:2208.08690](https://arxiv.org/abs/2208.08690). Orientation paper covering the OIE landscape. LLM section is the one to read.
+**Horton (2023) — Large Language Models as Simulated Economic Agents: What Can We Learn from Homo Silicus?** [arXiv:2301.07543](https://arxiv.org/abs/2301.07543). Behavioral simulation. Useful framing for our edit-decision-as-behavior view.
 
-**Seo et al. (2022) — Structural Quality Metrics to Evaluate Knowledge Graphs.** [arXiv:2211.10011](https://arxiv.org/abs/2211.10011). Six ground-truth-free structural metrics . Useful for the evaluation without ground-truth.
+**Santurkar et al. (2023) — Whose Opinions Do Language Models Reflect?** [arXiv:2303.17548](https://arxiv.org/abs/2303.17548). Shows LLMs' opinion distributions skew demographically. Directly relevant to bias direction in RQ1 and the prior-knowledge-leak hypothesis.
 
-**Wang et al. (2024) — A detailed analysis into evaluation metrics for KG evaluation.** [Springer link](https://link.springer.com/article/10.1007/s41060-025-00871-3). Survey covering link prediction, triple classification, and end-to-end reasoning metrics. Again Useful for eval.
+**"LLM-Simulated Users are Unreliable Proxies for Human..." (2026).** [arXiv:2601.17087](https://arxiv.org/abs/2601.17087). Most direct precedent that argues do systematically diverge from human users. Close neighbor to our headline claim.
+
+---
+
+## Conversational Graph Construction
+
+**Pan et al. (2025) — LLMs4SchemaDiscovery / SCHEMA-MINER.** [arXiv:2504.00752](https://arxiv.org/abs/2504.00752). Human-in-the-loop schema mining with iterative LLM + expert feedback in materials science. The "expert" loop is the human role we then swap with a sim-user.
+
+**Kommineni, König-Ries, Samuel (2024) — From human experts to machines: An LLM supported approach to ontology and knowledge graph construction.** [arXiv:2403.08345](https://arxiv.org/abs/2403.08345). Uses LLM-as-judge for evaluation. Precedent for swapping a human evaluator with an LLM.
+
+---
+
+## Background: Extraction Backbone
+
+**Zhang & Soh (2024) — Extract-Define-Canonicalize (EDC).** [arXiv:2404.03868](https://arxiv.org/abs/2404.03868). Three-phase LLM pipeline for KG construction. Reusable as our extraction backend so sessions have something to react to. Not under study.
