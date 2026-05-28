@@ -4,6 +4,7 @@
 - **v2 --- 27/05/2026** Locked measures and statistical tests for RQ1 and RQ2. Named primary outcomes per RQ. Added pre-registered decision rule. Locked initial seed-schema content, subject to revision after pilot. Added bootstrap power calculation to sample-size justification.
 - **v3 --- 28/05/2026** Elevated RQ2 terminal node count to coequal primary outcome. Pluralized Primary Outcomes heading. Normalized capitalization and date format.
 - **v4 --- 28/05/2026** Added sim-user Done trigger (hybrid: explicit token, 5 consecutive no-edits, or 30-turn cap). Added Alternative Explanations section.
+- **v5 --- 28/05/2026** Added Ethics section (anonymization).
 
 ---
 
@@ -202,6 +203,12 @@ bootstrap 95\% CI. Report sim-user median, human median, $\delta$, and CI per sc
 ## Notes
 
 - Multiple sim-user models — adds an "is divergence model-specific?" angle. Deferred; single model held constant for v0.
+
+---
+
+## Ethics
+
+- **Anonymization.** No PII collected. Sessions identified by random ID only.
 
 ---
 
