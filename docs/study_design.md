@@ -1,7 +1,9 @@
 ## Changelog
-- **V0 --- 2026-05-20** Initial study design. Recipe corpus, within-subject cuisine-familiarity design, single-session.
-- **V1 --- 2026-05-21** Dropped RQ2 and the cuisine-familiarity axis — weak familiarity margin on recipes. Match-only study: RQ1 + RQ3. One fixed seed schema.
-- **V2 --- 2026-05-27** Locked measures and statistical tests for RQ1 and RQ2. Named primary outcomes per RQ. Added pre-registered decision rule. Locked initial seed-schema content, subject to revision after pilot. Added bootstrap power calculation to sample-size justification.
+- **v0 --- 20/05/2026** Initial study design. Recipe corpus, within-subject cuisine-familiarity design, single-session.
+- **v1 --- 21/05/2026** Dropped RQ2 and the cuisine-familiarity axis — weak familiarity margin on recipes. Match-only study: RQ1 + RQ3. One fixed seed schema.
+- **v2 --- 27/05/2026** Locked measures and statistical tests for RQ1 and RQ2. Named primary outcomes per RQ. Added pre-registered decision rule. Locked initial seed-schema content, subject to revision after pilot. Added bootstrap power calculation to sample-size justification.
+- **v3 --- 28/05/2026** Elevated RQ2 terminal node count to coequal primary outcome. Pluralized Primary Outcomes heading. Normalized capitalization and date format.
+- **v4 --- 28/05/2026** Added sim-user Done trigger (hybrid: explicit token, 5 consecutive no-edits, or 30-turn cap). Added Alternative Explanations section.
 
 ---
 
@@ -27,7 +29,7 @@
 **Observed (dependent).**
 
 - Per-edit-type counts and frequencies — add / merge / split / rename / delete.
-- Edit source — assistant-proposed vs user-initiated
+- Edit source — assistant-proposed vs user-initiated.
 - Terminal schema node count.
 - Turn count per session.
 - Logged per edit event: turn index, action type, edit source, proposal disposition, target node/edge, timestamp.
@@ -92,10 +94,12 @@ Edges: `dish->cuisine`, `dish->category`, `dish->ingredient`.
 
 **Assistant.** Held constant — a fixed LLM (`claude-opus-4-7`) with a versioned prompt,
 proposing edits from the current schema state and recipe sample. Same assistant for every
-human and sim session.
+human and sim-user session.
 
-**Sim session.** Identical schema, assistant, and proposal loop. The sim-user LLM plays
-the user role. The sim runs the same turn loop and signals Done itself.
+**Sim-user session.** Identical schema, assistant, and proposal loop. The
+sim-user LLM plays the user role. The sim-user runs the same turn loop.
+Session ends on whichever fires first: (a) sim-user emits an explicit Done
+token, (b) 5 consecutive turns with no edit, (c) 30-turn cap.
 
 ---
 
@@ -126,16 +130,18 @@ margin.
 
 ---
 
-## Primary Outcome
+## Primary Outcomes
 
 **RQ1.** Per-session proportion of `merge` edits and per-session proportion of
-`delete` edits, compared sim vs human population (Cliff's $\delta$ with
+`delete` edits, compared sim-user vs human population (Cliff's $\delta$ with
 Holm-corrected Mann-Whitney $U$). Pre-registered as the two primary outcomes
 for RQ1. Proportions for `add`, `split`, and `rename` are secondary, but not the hypothesis-supporting test.
 
-**RQ2.** Per-session turn count and per-session merge ratio, compared sim vs
-human population (Cliff's $\delta$ with Mann-Whitney $U$). Pre-registered as
-the two primary outcomes for RQ2. Terminal node count is secondary.
+**RQ2.** Three coequal primary outcomes — per-session turn count, per-session
+merge ratio, and per-session terminal node count — compared sim-user vs human
+population (Cliff's $\delta$ with Mann-Whitney $U$). Merge ratio and terminal
+node count are deterministically related given the fixed seed; both reported
+for transparency.
 
 ---
 
@@ -146,19 +152,19 @@ Pre-registered. Maps test output to verdict before data collected.
 Effect-size threshold: $|\delta| \geq 0.33$ (Romano "medium"). Avoids
 significant-but-trivial results at the 120-session sim sample size.
 
-### RQ1 --- directional (sim over-merges, sim under-deletes)
+### RQ1 --- directional (sim-user over-merges, sim-user under-deletes)
 
 Hypothesis supported iff both hold:
 
 - `merge`: Holm-corrected $p < 0.05$, $\delta > 0$, $|\delta| \geq 0.33$.
 - `delete`: Holm-corrected $p < 0.05$, $\delta < 0$, $|\delta| \geq 0.33$.
 
-### RQ2 --- directional (sim fewer turns, sim higher merge ratio)
+### RQ2 --- directional (sim-user fewer turns, sim-user higher merge ratio)
 
 Hypothesis supported iff both hold:
 
-- `turn_count`: $p < 0.05$, sim median $<$ human median, $|\delta| \geq 0.33$.
-- `merge_ratio`: $p < 0.05$, sim median $>$ human median, $|\delta| \geq 0.33$.
+- `turn_count`: $p < 0.05$, sim-user median $<$ human median, $|\delta| \geq 0.33$.
+- `merge_ratio`: $p < 0.05$, sim-user median $>$ human median, $|\delta| \geq 0.33$.
 
 ---
 
@@ -173,11 +179,11 @@ All tests are non-parametric. Bootstrap 95\% CIs throughout.
 Counts normalized to proportions per session.
 
 **Per-type test.** Mann-Whitney U on each of the five components,
-sim-population vs human-population. Holm-Bonferroni correction across the five
+sim-user vs human population. Holm-Bonferroni correction across the five
 tests at family-wise $\alpha = 0.05$.
 
 **Per-type effect size.** Cliff's $\delta$ with bootstrap 95\% CI. Sign indicates
-direction of divergence (positive $\delta$ = sim higher than human on that edit type).
+direction of divergence (positive $\delta$ = sim-user higher than human on that edit type).
 
 ### RQ2 --- convergence speed and terminal schema shape
 
@@ -188,11 +194,22 @@ Three per-session scalars, pre-registered as separate hypotheses. No multiple-te
 3. **Merge ratio.** $1 - |V_\text{terminal}| / |V_\text{seed}|$. Direct readout
    of the over-merge hypothesis.
 
-**Test.** Mann-Whitney $U$ sim vs human on each scalar. Cliff's $\delta$ with
-bootstrap 95\% CI. Report sim median, human median, $\delta$, and CI per scalar.
+**Test.** Mann-Whitney $U$ sim-user vs human on each scalar. Cliff's $\delta$ with
+bootstrap 95\% CI. Report sim-user median, human median, $\delta$, and CI per scalar.
 
 ---
 
 ## Notes
 
-- Multiple sim-user models — adds an "is divergence model-specific?" angle. Deferred; single model held constant for V0.
+- Multiple sim-user models — adds an "is divergence model-specific?" angle. Deferred; single model held constant for v0.
+
+---
+
+## Alternative Explanations the Design Does Not Eliminate
+
+- **Training-data overlap.** Sim-user model has likely seen recipe taxonomies
+  in training. "Good" sim-user edits cannot be cleanly separated from
+  task-specific memorization.
+- **Single seed + single sim-user model.** Findings tied to one fixed seed
+  schema and one sim-user LLM. Generalization to other seeds, domains, or
+  models is not testable in this design.
